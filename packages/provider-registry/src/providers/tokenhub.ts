@@ -1,4 +1,24 @@
+import type { ReasoningSupport } from '../schemas/model'
+import type { ReasoningWireProfile } from '../schemas/reasoningWire'
 import { defineProvider } from './types'
+
+// Hy4 effort ladder (cloud.tencent.com/document/product/1823/131208): `none`/`high`/`max`, default
+// `high`. Thinking is toggled by `thinking.type`, the level by top-level `reasoning_effort`.
+const hy4Support: ReasoningSupport = {
+  controls: [{ kind: 'effort', values: ['none', 'high', 'max'], default: 'high' }],
+  supportedEfforts: ['none', 'high', 'max'],
+  defaultEffort: 'high'
+}
+
+const hy4Wire: ReasoningWireProfile = {
+  off: { operations: [{ target: 'thinking.type', value: { source: 'literal', value: 'disabled' } }] },
+  effort: {
+    operations: [
+      { target: 'thinking.type', value: { source: 'literal', value: 'enabled' } },
+      { target: 'reasoningEffort', value: { source: 'effort' } }
+    ]
+  }
+}
 
 // Tencent's TokenHub gateway serves Hunyuan (hy/hunyuan → tencent) AND re-hosts third-party models
 // (deepseek/glm/kimi/minimax/qwen → their own creators). These rows are tokenhub's served catalog: the
@@ -32,6 +52,13 @@ export default defineProvider({
   modelListSource: 'registry',
   overrides: [
     // Tencent-own
+    {
+      modelId: 'hy4',
+      apiModelId: 'hy4',
+      reasoningContracts: {
+        'openai-chat-completions': { support: hy4Support, wire: hy4Wire }
+      }
+    },
     { modelId: 'hy4-preview', apiModelId: 'hy4-preview' },
     { modelId: 'hy-role', apiModelId: 'hy-role' },
     { modelId: 'hy-mt2-pro', apiModelId: 'hy-mt2-pro' },

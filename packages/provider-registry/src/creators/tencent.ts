@@ -46,6 +46,14 @@ export default defineCreator({
       maxOutputTokens: 131072
     },
     {
+      id: 'hy4',
+      name: 'Hunyuan 4',
+      capabilities: ['reasoning', 'function-call', 'structured-output'],
+      contextWindow: 1048576,
+      maxInputTokens: 983040,
+      maxOutputTokens: 65536
+    },
+    {
       id: 'hy4-preview',
       name: 'Hunyuan 4 Preview',
       capabilities: ['reasoning', 'function-call', 'structured-output'],
