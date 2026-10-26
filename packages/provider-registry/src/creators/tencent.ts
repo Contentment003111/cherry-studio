@@ -48,7 +48,8 @@ export default defineCreator({
     {
       id: 'hy4',
       name: 'Hunyuan 4',
-      capabilities: ['reasoning', 'function-call', 'structured-output'],
+      capabilities: ['reasoning', 'function-call', 'structured-output', 'image-recognition'],
+      inputModalities: ['text', 'image'],
       contextWindow: 1048576,
       maxInputTokens: 983040,
       maxOutputTokens: 65536
